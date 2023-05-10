@@ -8,7 +8,7 @@ class BotForm(forms.ModelForm):
         ('get_shredded', 'Get shredded'),
     ]
 
-    BODY_CHOICES = [
+    PHYSICAL_CONDITION_CHOICES = [
         ('ectomorph', 'Ectomorph'),
         ('mesomorph', 'Mesomorph'),
         ('endomorph', 'Endomorph'),
@@ -20,11 +20,15 @@ class BotForm(forms.ModelForm):
     ]
 
     goal = forms.ChoiceField(choices=GOAL_CHOICES)
-    body_type = forms.ChoiceField(choices=BODY_CHOICES)
+    # body_type = forms.ChoiceField(choices=BODY_CHOICES)
+    physical_Condition = forms.ChoiceField(choices=PHYSICAL_CONDITION_CHOICES)
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     height = forms.IntegerField()
     weight = forms.IntegerField()
-    birthday = forms.DateField()
+    # birthday_day= forms.CharField()
+    # birthday_month= forms.CharField()
+    # birthday_year= forms.CharField()
+    birthday = forms.CharField()
 
     class Meta:
         model = Bot

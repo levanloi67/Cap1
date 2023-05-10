@@ -20,7 +20,7 @@ class Bot(models.Model):
         ('get_shredded', 'Get shredded'),
     ]
 
-    BODY_CHOICES = [
+    PHYSICAL_CONDITION_CHOICES = [
         ('ectomorph', 'Ectomorph'),
         ('mesomorph', 'Mesomorph'),
         ('endomorph', 'Endomorph'),
@@ -30,13 +30,15 @@ class Bot(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
     ]
-
-    goal = models.CharField(max_length=20, choices=GOAL_CHOICES)
-    body_type = models.CharField(max_length=20, choices=BODY_CHOICES)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    height = models.PositiveIntegerField()
-    weight = models.PositiveIntegerField()
-    birthday = models.DateField()
+    height = models.CharField(max_length=20)
+    weight = models.CharField(max_length=20)
+    goal = models.CharField(max_length=20, choices=GOAL_CHOICES)
+    physical_Condition = models.CharField(max_length=20, choices=PHYSICAL_CONDITION_CHOICES)
+    # birthday_day= models.CharField(max_length=20)
+    # birthday_month= models.CharField(max_length=20)
+    # birthday_year= models.CharField(max_length=20)
+    birthday = models.CharField(max_length=20)
 
 class Enrollment(models.Model):        
     FullName=models.CharField(max_length=25)
@@ -47,7 +49,7 @@ class Enrollment(models.Model):
     SelectMembershipplan=models.CharField(max_length=200)
     Address=models.TextField()
     paymentStatus=models.CharField(max_length=55,blank=True,null=True)
-    Price=models.IntegerField(max_length=55,blank=True,null=True)
+    Price=models.IntegerField(blank=True,null=True)
     DueDate=models.DateTimeField(blank=True,null=True)
     timeStamp=models.DateTimeField(auto_now_add=True,blank=True,)
 
@@ -58,14 +60,14 @@ class Trainer(models.Model):
     name=models.CharField(max_length=55)
     gender=models.CharField(max_length=25)
     phone=models.CharField(max_length=25)
-    salary=models.IntegerField(max_length=25)
+    salary=models.IntegerField()
     timeStamp=models.DateTimeField(auto_now_add=True,blank=True)
     def __str__(self):
         return self.name
 
 class MembershipPlan(models.Model):
     plan=models.CharField(max_length=185)
-    price=models.IntegerField(max_length=55)
+    price=models.IntegerField()
 
     def __int__(self):
         return self.id

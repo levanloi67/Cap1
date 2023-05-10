@@ -9,6 +9,7 @@ from authapp.models import Bot
 from .model_classification import Model_Classification
 from django.http import JsonResponse
 from datetime import datetime
+from django.http import HttpResponse
 # from .suggest import suggest
 
 import numpy as np
@@ -16,18 +17,42 @@ import numpy as np
 # Create your views here.
 def BotForm(request):
     if request.method == 'POST':
+        print('save data')
 
-        # # Đẩy data lên admin
-        # gender = request.POST.get('gender')
-        # height = request.POST.get('height')
-        # weight = request.POST.get('weight')
-        # goal = request.POST.get('goal')
-        # type = request.POST.get('type')
-        # birthday_day= request.POST.get('birthday-day')
-        # birthday_month= request.POST.get('birthday-month')
-        # birthday_year= request.POST.get('birthday-year')
-        # birthday = f"{birthday_day}-{birthday_month}-{birthday_year}"
-        # myquery=Bot(goal=goal,body_type=type,gender=gender,height=height,weight=weight,birthday=birthday)
+        # Đẩy data lên admin
+        gender = request.POST.get('gender')
+        print(type(gender))
+        
+        # return JsonResponse({'result': type(gender)})
+        height = request.POST.get('height')
+        print(height)
+        weight = request.POST.get('weight')
+        print(weight)
+        goal = request.POST.get('goal')
+        print(goal)
+        physical_Condition = request.POST.get('physical_Condition')
+        print(physical_Condition)
+        birthday_day= request.POST.get('birthday_day')
+        print(birthday_day)
+        birthday_month= request.POST.get('birthday_month')
+        print(birthday_month)
+        birthday_year= request.POST.get('birthday_year')
+        print(birthday_year)
+        birthday = f"{birthday_day}-{birthday_month}-{birthday_year}"
+        birthday= request.POST.get('birthday')
+        print(birthday)
+
+        # Kiem tra kieu du lieu khi get tu POST
+        type_gender = type(gender).__name__
+        type_height = type(height).__name__
+        type_weight = type(weight).__name__
+        type_goal = type(goal).__name__
+        type_physical_Condition = type(physical_Condition).__name__
+        # type_birthday_day = type(birthday_day).__name__
+        # type_birthday = type(birthday).__name__
+        # return JsonResponse({'gender': type_gender,'height':type_height,'weight':type_weight,'goal':type_goal,'physical_Condition':type_physical_Condition,'birthday_day':type_birthday_day,'birthday':type_birthday})
+
+        # myquery=Bot(gender=gender,height=height,weight=weight,goal=goal,physical_Condition=physical_Condition,birthday=birthday)
         # myquery.save()
 
         print(request.POST)
@@ -107,58 +132,141 @@ def BotForm(request):
             list_tong = ['type_Body', 'age_range', 'gender', 'goal', 'physical_Condition']
             
             for item in list_tong:
-                print("item:", item)
-                if item == "type_Body":
-                    for val in type_Body_list:
-                        print("val:", val)
-                        if val == "Extremely Weak":
-                            result_Suggest.append("a")
-                        elif val == "Weak":
-                            result_Suggest.append("b")
-                        elif val == "Normal":
-                            result_Suggest.append("c")
-                        elif val == "Overweight":
-                            result_Suggest.append("d")
-                        elif val == "Obesity":
-                            result_Suggest.append("e")
-                        elif val == "Extreme Obesity":
-                            result_Suggest.append("f")
+                print("item:", item)               
+                if item == "goal":
+                    for val in goal_list:
+                        # print("val:", val)
+                        if val == "lose_weight":
+                            if "gender" in list_tong:
+                                for val in gender_list:
+                                    # print("val:", val)
+                                    if val == 1.0:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Bắt đầu với các bài tập cardio nhẹ nhàng như đi bộ, chạy bộ, hoặc bơi lội. Sau đó, nên tập thêm các bài tập đẩy tay, cơ bụng, squat để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                elif val == "Weak":
+                                                    result_Suggest.append("Tập luyện cardio nhẹ nhàng như chạy bộ, đi bộ, hoặc bơi lội. Nên tập thêm các bài tập đẩy tay, cơ bụng, squat để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                elif val == "Normal":
+                                                    result_Suggest.append("Tập luyện cardio như chạy bộ, đi bộ, hoặc bơi lội. Nên tập thêm các bài tập đẩy tay, cơ bụng, squat để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                elif val == "Overweight":
+                                                    result_Suggest.append("Tập luyện cardio như chạy bộ, đi bộ, hoặc bơi lội. Nên tập thêm các bài tập đẩy tay, cơ bụng, squat để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                else :
+                                                    result_Suggest.append("Tập luyện cardio như chạy bộ, đi bộ, hoặc bơi lội. Nên tập thêm các bài tập đẩy tay, cơ bụng, squat để tăng cường đốt cháy calo và giảm mỡ thừa. Cần hạn chế tập các bài tập tạ hoặc các bài tập khác có tác động mạnh đến cơ bắp và khớp.")
+
+                                    else:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Bắt đầu với các bài tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây.")
+                                                elif val == "Weak":
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây.")
+                                                elif val == "Normal":
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                elif val == "Overweight":
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                else :
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa. Cần hạn chế tập các bài tập tạ hoặc các bài tập khác có tác động mạnh đến cơ bắp và khớp.")
+
+                        elif val == "gain_muscle_mass":
+                            if "gender" in list_tong:
+                                for val in gender_list:
+                                    # print("val:", val)
+                                    if val == 1.0:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng nhẹ để tăng cường cơ bắp và giúp cơ thể phát triển.")
+                                                elif val == "Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển.")
+                                                elif val == "Normal":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio để giảm mỡ thừa và giúp cơ bắp được khoe hơn.")
+                                                elif val == "Overweight":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio để giảm mỡ thừa và giúp cơ bắp được khoe hơn.")
+                                                else :
+                                                    result_Suggest.append("Bắt đầu với các bài tập cardio nhẹ nhàng như đi bộ, chạy bộ, hoặc bơi lội")
+
+                                    else:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng nhẹ để tăng cường cơ bắp và giúp cơ thể phát triển.")
+                                                elif val == "Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển.")
+                                                elif val == "Normal":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio để giảm mỡ thừa và giúp cơ bắp được khoe hơn.")
+                                                elif val == "Overweight":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio nhẹ nhàng như yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng và giúp cơ bắp được khoe hơn.")
+                                                else :
+                                                    result_Suggest.append("Bắt đầu với các bài tập cardio nhẹ nhàng như đi bộ, chạy bộ, hoặc bơi lội để tăng cường sức khỏe và giảm cân. Sau khi giảm cân đến mức an toàn, có thể bắt đầu tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng nhẹ để tăng cường cơ bắp và giúp cơ thể phát triển.")
+
+                        else:
+                            if "gender" in list_tong:
+                                for val in gender_list:
+                                    # print("val:", val)
+                                    if val == 1.0:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng nhẹ để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                elif val == "Weak":
+                                                    result_Suggest.append("Tập các bài tập cơ bắp cơ bản như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                else :
+                                                    result_Suggest.append("Tập các bài tập cơ bắp như tạ đơn, đẩy tay, nâng tạ, squat với trọng lượng vừa phải để tăng cường cơ bắp và giúp cơ thể phát triển. Nên tập thêm các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+
+                                    else:
+                                        if "type_Body" in list_tong:
+                                            for val in type_Body_list:
+                                                if val == "Extremely Weak":
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+                                                else :
+                                                    result_Suggest.append("Tập yoga, pilates hoặc aerobic để giảm cân một cách nhẹ nhàng. Nên tập thêm các bài tập giúp đốt cháy mỡ như plank, cơ bụng và các bài tập cardio như chạy bộ, nhảy dây hoặc bơi lội để tăng cường đốt cháy calo và giảm mỡ thừa.")
+
+
                 elif item == "age_range":
                     for val in age_range_list:
                         print("val:", val)
                         if val == "0":
-                            result_Suggest.append("1") 
+                            if "physical_Condition" in list_tong:
+                                for val in physical_Condition_list:
+                                    print("val:", val)
+                                    if val == "ectomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc tăng cường sức mạnh và cơ bắp. Tập luyện từ 3-4 lần/tuần, với cường độ trung bình đến cao.")
+                                    elif val == "mesomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc phát triển sức mạnh, cơ bắp và sự nhanh nhẹn. Tập luyện từ 3-4 lần/tuần, với cường độ trung bình đến cao.")
+                                    else:
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc giảm mỡ và tăng cường sức khỏe. Tập luyện từ 3-4 lần/tuần, với cường độ trung bình đến thấp.")
                         elif val == "1":
-                            result_Suggest.append("2")
+                            if "physical_Condition" in list_tong:
+                                for val in physical_Condition_list:
+                                    print("val:", val)
+                                    if val == "ectomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc tăng cường sức mạnh và cơ bắp. Tập luyện từ 3-5 lần/tuần, với cường độ trung bình đến cao.")
+                                    elif val == "mesomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc phát triển sức mạnh, cơ bắp và sự nhanh nhẹn. Tập luyện từ 3-5 lần/tuần, với cường độ trung bình đến cao.")
+                                    else:
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc giảm mỡ và tăng cường sức khỏe. Tập luyện từ 3-4 lần/tuần, với cường độ trung bình đến thấp.")
                         elif val == "2":
-                            result_Suggest.append("3")
-                        elif val == "3":
-                            result_Suggest.append("4")
-                elif item == "gender":
-                    for val in gender_list:
-                        print("val:", val)
-                        if val == 1.0:
-                            result_Suggest.append("A") 
-                        elif val == 0.0:
-                            result_Suggest.append("B")
-                elif item == "goal":
-                    for val in goal_list:
-                        print("val:", val)
-                        if val == "lose_weight":
-                            result_Suggest.append("I") 
-                        elif val == "gain_muscle_mass":
-                            result_Suggest.append("II")
-                        elif val == "get_shredded":
-                            result_Suggest.append("III")
-                elif item == "physical_Condition":
-                    for val in physical_Condition_list:
-                        print("val:", val)
-                        if val == "ectomorph":
-                            result_Suggest.append("q") 
-                        elif val == "mesomorph":
-                            result_Suggest.append("w")
-                        elif val == "endomorph":
-                            result_Suggest.append("e")
+                            if "physical_Condition" in list_tong:
+                                for val in physical_Condition_list:
+                                    print("val:", val)
+                                    if val == "ectomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc tăng cường sức mạnh, cơ bắp và duy trì thể lực. Tập luyện từ 2-4 lần/tuần, với cường độ trung bình đến cao.")
+                                    elif val == "mesomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc phát triển sức mạnh, cơ bắp và sự nhanh nhẹn. Tập luyện từ 2-4 lần/tuần, với cường độ trung bình đến cao.")
+                                    else:
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc giảm mỡ và tăng cường sức khỏe. Tập luyện từ 2-3 lần/tuần, với cường độ trung bình đến thấp.")
+                        else:
+                            if "physical_Condition" in list_tong:
+                                for val in physical_Condition_list:
+                                    print("val:", val)
+                                    if val == "ectomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc duy trì và nâng cao sức khỏe, bảo vệ cơ bắp và xương khớp. Tập luyện từ 2-3 lần/tuần, với cường độ thấp đến trung bình.")
+                                    elif val == "mesomorph":
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc duy trì sức mạnh, cơ bắp và sự nhanh nhẹn, đồng thời bảo vệ sức khỏe của cơ thể. Tập luyện từ 2-3 lần/tuần, với cường độ trung bình đến cao.")
+                                    else:
+                                        result_Suggest.append("Cường độ tập luyện nên tập trung vào việc giảm mỡ, duy trì sức khỏe và tăng cường khả năng thực hiện các hoạt động hàng ngày. Tập luyện từ 2-3 lần/tuần, với cường độ thấp đến trung bình.")
+
                 else:
                     result_Suggest.append("This is an exception")
             return result_Suggest
@@ -178,11 +286,14 @@ def BotForm(request):
 
         # xuất màn hình
         # return JsonResponse({'result': type_Body,'result_Suggest':result_Suggest})
-        return render(request, 'bot.html', {'result': type_Body,'Suggestions_for_exercises':Suggestions_for_exercises,'sd_e':sd_e,'nd_e':nd_e,'rd_e':rd_e,'fth_e':fth_e,'th_e':th_e})
+        return render(request, 'bot.html', {'result': type_Body,'nd_e':nd_e,'th_e':th_e})#'Suggestions_for_exercises':Suggestions_for_exercises,
+        # return HttpResponse(request, {type(gender)})
 
     else:
+        print('Save Data Failed')
     #     form = BotForm()
         return render(request, 'bot.html')
+    
 
 def contact(request):
     if request.method=="POST":
